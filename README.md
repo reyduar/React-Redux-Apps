@@ -1,6 +1,30 @@
+# REACT-REDUX-APPS
+
+## AUTHOR
+
+- Ariel Duarte
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
+
+### Create React App
+
+```
+npx create-react-app my-app
+cd my-app
+npm start
+```
+
+**Redux;** es un contenedor de estado predecible para aplicaciones JavaScript.
+
+`npm install --save redux`
+
+> https://www.npmjs.com/package/redux
+
+**react-redux**
+
+`npm install --save react-redux`
 
 In the project directory, you can run:
 

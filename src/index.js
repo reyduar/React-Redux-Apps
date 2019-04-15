@@ -4,9 +4,41 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+// Crear el STATE inicial
+const state = {
+    cantidad: 2
+  };
+
+// Crear la funcion REDUCER
+const reducer = (state, action) => {
+    // Hacemos la copia del State anterior
+    var nuevoEstado = Object.assign({}, state);
+    if (action.type === 'AUM') {
+        nuevoEstado.cantidad = state.cantidad + 1;
+        return nuevoEstado;
+    }
+
+    if (action.type === 'DIS') {
+        nuevoEstado.cantidad = state.cantidad - 1;
+        return nuevoEstado;
+    }
+
+  return state;
+};
+
+// Crear el STORE
+const store = createStore(reducer, state);
+
+ReactDOM.render(
+  // Implementar el PROVIDER para englobar todos los componentes al Store osea tienen acceso al STORE, dispachar acciones,
+  // y tiene acceso al STATE
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+
 serviceWorker.unregister();
