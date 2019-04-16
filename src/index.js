@@ -4,33 +4,66 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 
-// Crear el STATE inicial
-const state = {
-    cantidad: 2
-  };
+// Crear el STATE inicial, cuando implementamos el combineReducers
+// ya no es necesario esto, sino que lo definimos en cada reducer
+// const state = {  cantidad: 2 };
 
-// Crear la funcion REDUCER
-const reducer = (state, action) => {
+// Crear la funcion REDUCER para el contador
+const reducerContador = (state = 2, action) => {
     // Hacemos la copia del State anterior
     var nuevoEstado = Object.assign({}, state);
     if (action.type === 'AUM') {
-        nuevoEstado.cantidad = state.cantidad + 1;
+        nuevoEstado = state + 1;
         return nuevoEstado;
     }
 
     if (action.type === 'DIS') {
-        nuevoEstado.cantidad = state.cantidad - 1;
+        nuevoEstado = state - 1;
         return nuevoEstado;
     }
 
   return state;
 };
 
+// Crear la funcion REDUCER para el TODO
+const reducerTodo = (state = [], action) => {
+    var nuevoEstado = Object.assign({}, state);
+    if (action.type === 'ADD') {
+        nuevoEstado = state.concat([{tarea: action.tarea, id: action.id}]);
+        console.log('====================================');
+        console.log(JSON.stringify(nuevoEstado));
+        console.log('====================================');
+        return nuevoEstado;
+    }
+  return state;
+};
+
+
+// Crear la funcion REDUCER para el ID
+const reducerId = (state = 1, action) => {
+    var nuevoEstado = Object.assign({}, state);
+    if (action.type === 'ADD') {
+        nuevoEstado = state +1;
+        return nuevoEstado;
+    }
+  return state;
+};
+
+
+// Creamos nuestro combineReducer para implementar todo nuestros REDUCERS
+// El combineReducer toma un objeto JS con los demas reducers como valores
+// Con el combineReducer necesitamos que cada estado sea inicializado en su reducer
+const reducer = combineReducers({
+    contador: reducerContador,
+    todos: reducerTodo,
+    id: reducerId
+});
+
 // Crear el STORE
-const store = createStore(reducer, state);
+const store = createStore(reducer);
 
 ReactDOM.render(
   // Implementar el PROVIDER para englobar todos los componentes al Store osea tienen acceso al STORE, dispachar acciones,

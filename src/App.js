@@ -5,20 +5,44 @@ import { connect } from 'react-redux';
 
 
 class App extends Component {
+
+// Creamos una funcion fuera del scope de Redux para llamar a la action this.props.agregar
+agregarTarea = (evento) => {
+  if(evento.which === 13) {
+    console.log('event: ', evento.target.value);
+    this.props.agregar(evento.target.value, this.props.id)
+  }
+   
+}
+
   render() {
+
+  // Creamos un mecanimo para mostrar la lista de tareas
+  const elementosTareas = this.props.tareas.map( (t) => {
+      return <h4 key={t.id}> {t.tarea} </h4>
+  })
+
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            React - Redux App | Ariel Duarte(c)2019
+        <img src={logo} className="App-logo" alt="logo" />
+        <h4> React - Redux Apps | 2019 &copy;Ariel Duarte </h4>
+        </header>
+        <div className="App-intro">
+        <p>
+            Contador Redux App
           </p>
           <a className="App-link" href="javascript:;" onClick={this.props.aumentar}> [+] Aumentar</a> 
           <a className="App-link" href="javascript:;" onClick={this.props.disminuir}> [-] Disminuir</a>
           <p><strong>Contador: </strong>  {this.props.informacion}</p>
-           
-          
-        </header>
+          <br />
+          <p>
+            TODO Redux App
+          </p>
+          <input onKeyPress={this.agregarTarea.bind(this)} placeholder="Ingrese la nueva tarea" />
+          <br />
+          {elementosTareas}
+        </div>
       </div>
     );
   }
@@ -31,7 +55,10 @@ class App extends Component {
 // por lo que constantemente en caso de un cambio en el STATE se actualiza o se ejecuta nuevamente.
 const mapStateToProps = (state) => {
   return {
-    informacion: state.cantidad
+    // informacion: state.cantidad
+    informacion: state.contador,
+    tareas: state.todos,
+    id: state.id
   }
 }
 // MapDispatchToProps[as a OBJECTO] puede ser un objeto o una funcion, esto tiene funciones que se asume que son actionCreators
@@ -46,7 +73,8 @@ const mapDispatchToProps = (dispatch) => {
 
   return {
     aumentar: ()=> { dispatch( { type: 'AUM'} ); },
-    disminuir: () => { dispatch( { type: 'DIS'}); }
+    disminuir: () => { dispatch( { type: 'DIS'}); },
+    agregar: (tarea, id)=> { dispatch( {type: 'ADD', tarea, id}); }
   }
 }
 
