@@ -72,7 +72,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 
   return {
-    aumentar: ()=> { dispatch( { type: 'AUM'} ); },
+    // Ejemplo de Redux Thunk para llamar una funcion dentro del dispatch
+    aumentar: ()=> { dispatch(
+      (dispatch) => {
+        setTimeout(() => {
+          return  dispatch({ type: 'AUM'})
+        }, 1000);
+      }
+    );},
     disminuir: () => { dispatch( { type: 'DIS'}); },
     agregar: (tarea, id)=> { dispatch( {type: 'ADD', tarea, id}); }
   }

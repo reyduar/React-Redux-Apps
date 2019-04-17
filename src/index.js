@@ -4,8 +4,9 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import ReduxThunk from 'redux-thunk'
 
 // Crear el STATE inicial, cuando implementamos el combineReducers
 // ya no es necesario esto, sino que lo definimos en cada reducer
@@ -63,7 +64,8 @@ const reducer = combineReducers({
 });
 
 // Crear el STORE
-const store = createStore(reducer);
+// Se inyecta el applyMiddleware en el createStore y tambien implementamos Redux Thunk
+const store = createStore(reducer, applyMiddleware(ReduxThunk));
 
 ReactDOM.render(
   // Implementar el PROVIDER para englobar todos los componentes al Store osea tienen acceso al STORE, dispachar acciones,
